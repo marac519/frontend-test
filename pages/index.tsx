@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useEffect } from 'react';
 
 
 // Import the functions you need from the SDKs you need
@@ -22,6 +23,11 @@ const app = initializeApp(firebaseConfig);
 
 
 const Home: NextPage = () => {
+
+  useEffect(() => {
+    console.log(app)
+  }, [])
+  
   return (
    <h1>Hello</h1>
   )
