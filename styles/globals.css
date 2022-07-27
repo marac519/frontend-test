@@ -24,3 +24,29 @@ a {
     background: black;
   }
 }
+
+.background-container {
+  height: 100vh;
+  background-color: darkslategray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.googlebutton {
+  border-radius: 50px !important;
+  background: white !important;
+  color: black !important; 
+  overflow: hidden !important; 
+  height: 40px !important; 
+  display: flex !important; 
+  align-items: center !important;
+}
+.googlebutton span {
+  margin-left: 10%;
+}
+
+.active-menu-item {
+  background-color: cadetblue;
+  border-radius: 10px;
+}
