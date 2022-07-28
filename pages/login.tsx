@@ -18,7 +18,7 @@ import {
   Stack,
 } from '@mantine/core';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-import useAppStore from "../store/useStore"
+import useAppStore from "../store/useAppStore"
 import GoogleButton from 'react-google-button';
 
 function Login(props:any) {

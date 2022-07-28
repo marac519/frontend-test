@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { useEffect } from 'react';
 import { getAuth, signOut } from "firebase/auth";
-import useAppStore from "../store/useStore"
+import useAppStore from "../store/useAppStore"
 
 
 
@@ -39,20 +39,20 @@ function Header() {
     {user == null ? <></> : <>
       <nav className="navbar navbar-expand-lg bg-light">
       <div className="container-fluid">
-        <a className="navbar-brand">Uploader</a>
+        <a className="navbar-brand" style={{'marginLeft': "12px"}}>Uploader</a>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className={Router.pathname == "/" ? "nav-link active-menu-item" : "nav-link"}>
+            <li style={{'marginRight': "20px", 'marginLeft': "12px"}}>
               <Link href="/">
-                <a className="nav-link active" aria-current="page">Home</a>
+                <a className={Router.pathname == "/" ? "nav-link active-menu-item" : "nav-link"} aria-current="page">Home</a>
               </Link>
             </li>
-            <li className={Router.pathname == "/upload" ? "nav-link active-menu-item" : "nav-link"} >
+            <li  >
               <Link href="/upload">
-                <a className="nav-link active" aria-current="page">Upload</a>
+                <a className={Router.pathname == "/upload" ? "nav-link active-menu-item" : "nav-link"} aria-current="page">Upload</a>
               </Link>
             </li>
           </ul>

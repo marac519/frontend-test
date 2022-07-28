@@ -17,6 +17,7 @@
     "@mantine/hooks": "^5.0.0",
     "@mantine/next": "^5.0.0",
     "@mantine/notifications": "^5.0.0",
+    "@tabler/icons": "^1.78.1",
     "bootstrap": "^5.2.0",
     "firebase": "^9.9.1",
     "next": "12.2.3",

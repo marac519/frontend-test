@@ -8,9 +8,10 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { initializeApp } from "firebase/app";
 import { useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import useAppStore from '../store/useStore';
+import useAppStore from '../store/useAppStore';
 import Head from 'next/head';
 import Script from 'next/script';
+import { getFirestore } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,7 +27,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-
+export const db = getFirestore(app);
 
 function MyApp({ Component, pageProps }: AppProps) {
 
