@@ -1,12 +1,13 @@
 import { useRef } from 'react';
 import { Text, Group, Button, createStyles } from '@mantine/core';
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
-import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons';
+import { IconCloudUpload, IconX, IconDownload, IconCircleCheck } from '@tabler/icons';
 
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { db } from './../pages/_app' 
 import useAppStore from '../store/useAppStore';
+import { showNotification } from '@mantine/notifications';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -39,21 +40,78 @@ export function DropzoneButton() {
   const openRef = useRef<() => void>(null);
 
   async function uploadImageToFirebase(file:File){
+    showNotification({
+      styles: (theme) => ({
+        root: {
+          backgroundColor: 'white',
+          borderColor: theme.colors.blue[6],
+
+          '&::before': { backgroundColor: theme.white },
+        },
+
+        title: { color: theme.white },
+        description: { color: theme.white },
+        closeButton: {
+          color: theme.white,
+          '&:hover': { backgroundColor: theme.colors.blue[7] },
+        },
+      }),
+      message: "Uploading...",
+      loading: true
+    })
     const storage = getStorage();
     const storageRef = ref(storage, file.name);
 
-    console.log("file mit kaptam", file)
+    console.log("file mit kaptam", file )
+  
+    try {
+      const result = await uploadBytes(storageRef, file).then((snapshot) => {
+        console.log('Uploaded a blob or file!:');
+      });
+      console.log(result)
+  
+      const url = await getDownloadURL(ref(storage, `gs://frontend-test-e15e4.appspot.com/${file.name}`))
+      console.log("url:", url)
+      console.log("user.uid:",user.uid)
+      
+      const docRef = await addDoc(collection(db, "images"), {
+        userId: `${user.uid}`,
+        imageURL: `${url}`
+      });
 
-    const result = await uploadBytes(storageRef, file).then((snapshot) => {
-      console.log('Uploaded a blob or file!:');
-    });
-    console.log(result)
-
-    const url = await getDownloadURL(ref(storage, `gs://bucket/${file.name}`))
-    await setDoc(doc(db, "images"), {
-      userId: `${user.uid}`,
-      imageURL: ``
-    });
+      showNotification({
+        title: 'Successfull upload 🥳',
+        message: 'You can view your uploaded images on the Home page!',
+        icon: <IconCircleCheck/>,
+        className: 'notification-icon',
+        autoClose: 50000,
+        style: {'background': 'white'},
+        styles: (theme) => ({
+          root: {
+            backgroundColor: 'white',
+            borderColor: '#198754',
+            '&::before': { backgroundColor: 'white' },
+          },
+          title: { color: theme.black },
+          description: { color: theme.black },
+          closeButton: {
+            color: theme.black,
+            '&:hover': { backgroundColor: theme.colors.green[7] },
+          },
+        })
+    })
+    } catch (error) {
+      showNotification({
+        title: 'Error 🤥',
+        message: 'Cannot upload the photo!',
+        styles: (theme) => ({
+          root: {
+            backgroundColor: 'red',
+            borderColor: 'red',
+          },
+        })
+      })
+    }
   }
 
   return (
