@@ -90,3 +90,38 @@ a {
 #ReactSimpleImageViewer {
   z-index: 1000;
 }
+
+.mantine-Button-root{
+  background-color: #198754;
+  border: 2px solid #198754;
+  transition: all 300ms;
+}
+.mantine-Button-root:hover{
+  background-color: white;
+  color: #198754;
+}
+
+.profile-area {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 0 10%; */
+}
+
+@media screen and (max-width: 992px) {
+  .profile-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10%;
+  }
+  ul {
+    margin-top: 30px !important;
+    padding-bottom: 30px !important;
+  }
+}

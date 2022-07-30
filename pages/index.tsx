@@ -14,6 +14,7 @@ import useAppStore from '../store/useAppStore';
 import { getAuth } from 'firebase/auth';
 
 import ImageViewer from 'react-simple-image-viewer';
+import { IconTrash } from '@tabler/icons';
 
 function Home() {
   const auth = getAuth();
@@ -67,7 +68,7 @@ function Home() {
     console.log(images)
     const filtered: any = []
     images.forEach((value) => filtered.push(value.imageURL))
-    // console.log(filtered)
+    //console.log(filtered)
     setimages_for_imageviewer(filtered)
   }, [images])
 
@@ -91,7 +92,10 @@ function Home() {
       <div className="card-body">
         <h5 className="card-title">{user.displayName}</h5>
         <p className="card-text">{timeConverter(image.created_at['seconds'])}</p>
-        <button className="btn btn-success" style={{'background': '#198754 !important'}} onClick={() => openImageViewer(index)}>View the image</button>
+        <div>
+          <button className="btn btn-success" style={{'background': '#198754 !important'}} onClick={() => openImageViewer(index)}>View the image</button>
+          <IconTrash color='red' style={{'marginLeft': '85px'}}/>
+        </div>
       </div>
     </div>
   )

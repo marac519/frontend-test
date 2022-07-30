@@ -46,7 +46,7 @@ function Header() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0 nav-menu">
             <li style={{'marginRight': "20px", 'marginLeft': "12px"}}>
               <Link href="/">
                 <a className={Router.pathname == "/" ? "btn-success nav-link active-menu-item menu-item" : "nav-link menu-item"} aria-current="page">Home</a>
@@ -58,9 +58,11 @@ function Header() {
               </Link>
             </li>
           </ul>
-          <p style={{'margin': 0}}>{user.email}</p>
-          <img src={user.photoURL ? user.photoURL : "https://picsum.photos/200/300"} style={{'borderRadius': '100px', 'height': '35px', 'width': '35px', 'marginRight': '80px', 'marginLeft': '20px'}}/>
-          <button className="btn btn-outline-success" onClick={signOutFromFirebase}>Signout</button>
+          <div className='profile-area'>
+            <p style={{'margin': 0}}>{user.email}</p>
+            <img src={user.photoURL ? user.photoURL : "https://picsum.photos/200/300"} style={{'borderRadius': '100px', 'height': '35px', 'width': '35px', 'marginRight': '80px', 'marginLeft': '20px'}}/>
+            <button className="btn btn-outline-success" onClick={signOutFromFirebase}>Signout</button>
+          </div>
         </div>
       </div>
     </nav>
