@@ -4,10 +4,10 @@ import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import { IconCloudUpload, IconX, IconDownload, IconCircleCheck } from '@tabler/icons';
 
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp  } from "firebase/firestore";
 import { db } from './../pages/_app' 
 import useAppStore from '../store/useAppStore';
-import { showNotification } from '@mantine/notifications';
+import { showNotification, cleanNotifications } from '@mantine/notifications';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -59,12 +59,12 @@ export function DropzoneButton() {
       message: "Uploading...",
       loading: true
     })
-    const storage = getStorage();
-    const storageRef = ref(storage, file.name);
-
+    
     console.log("file mit kaptam", file )
-  
+    
     try {
+      const storage = getStorage();
+      const storageRef = ref(storage, file.name);
       const result = await uploadBytes(storageRef, file).then((snapshot) => {
         console.log('Uploaded a blob or file!:');
       });
@@ -76,41 +76,54 @@ export function DropzoneButton() {
       
       const docRef = await addDoc(collection(db, "images"), {
         userId: `${user.uid}`,
-        imageURL: `${url}`
+        imageURL: `${url}`,
+        created_at: serverTimestamp(),
       });
-
-      showNotification({
-        title: 'Successfull upload 🥳',
-        message: 'You can view your uploaded images on the Home page!',
-        icon: <IconCircleCheck/>,
-        className: 'notification-icon',
-        autoClose: 50000,
-        style: {'background': 'white'},
-        styles: (theme) => ({
-          root: {
-            backgroundColor: 'white',
-            borderColor: '#198754',
-            '&::before': { backgroundColor: 'white' },
-          },
-          title: { color: theme.black },
-          description: { color: theme.black },
-          closeButton: {
-            color: theme.black,
-            '&:hover': { backgroundColor: theme.colors.green[7] },
-          },
+      cleanNotifications()
+      setTimeout(() => {
+        showNotification({
+          title: 'Successfull upload 🥳',
+          message: 'You can view your uploaded images on the Home page!',
+          icon: <IconCircleCheck/>,
+          autoClose: 5000,
+          style: {'background': 'white'},
+          styles: (theme) => ({
+            root: {
+              backgroundColor: 'white',
+              borderColor: '#198754',
+              '&::before': { backgroundColor: 'white' },
+            },
+            title: { color: theme.black },
+            description: { color: theme.black },
+            closeButton: {
+              color: theme.black,
+              '&:hover': { backgroundColor: '#198754 !important' },
+            },
+          })
         })
-    })
+      }, 300);
     } catch (error) {
-      showNotification({
-        title: 'Error 🤥',
-        message: 'Cannot upload the photo!',
-        styles: (theme) => ({
-          root: {
-            backgroundColor: 'red',
-            borderColor: 'red',
-          },
+      cleanNotifications()
+      setTimeout(() => {
+        showNotification({
+          title: 'Error 🤥',
+          message: 'Cannot upload the photo!',
+          autoClose: 5000,
+          styles: (theme) => ({
+            root: {
+              backgroundColor: 'white',
+              borderColor: 'red',
+              '&::before': { backgroundColor: 'red' },
+            },
+            title: { color: theme.black },
+            description: { color: theme.black },
+            closeButton: {
+              color: theme.black,
+              '&:hover': { backgroundColor: 'red !important' },
+            },
+          })
         })
-      })
+      }, 300);
     }
   }
 

@@ -6,7 +6,7 @@ function Upload() {
   return (
     <>
       <Header />
-      <div className='page-content'>
+      <div className='page-content' style={{'height': 'calc(100vh - 56px)'}}>
       <DropzoneButton />
       </div>
     </>

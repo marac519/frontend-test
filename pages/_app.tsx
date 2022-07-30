@@ -47,6 +47,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     console.log(app)
+    setuser(auth.currentUser)
   }, [])
   
   return <>

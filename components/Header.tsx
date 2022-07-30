@@ -26,8 +26,8 @@ function Header() {
   }
 
   useEffect(() => {
-    console.log("user:",user)
-    if(user == null){
+    console.log("user:",auth.currentUser)
+    if(auth.currentUser == null){
       Router.push("/login");
     }
     // console.log(user.email == undefined)
