@@ -1,14 +1,20 @@
 import React from 'react'
 import Header from '../components/Header'
 import { DropzoneButton } from '../components/Dropzone'
+import { motion } from 'framer-motion'
 
 function Upload() {
   return (
     <>
       <Header />
-      <div className='page-content' style={{'height': 'calc(100vh - 56px)'}}>
+      <motion.div
+        className='page-content'
+        style={{'height': 'calc(100vh - 56px)'}}
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+      >
       <DropzoneButton />
-      </div>
+      </motion.div>
     </>
   )
 }

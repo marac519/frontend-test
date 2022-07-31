@@ -39,15 +39,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setuser(user)
-      const uid = user.uid;
+      localStorage.setItem("user", JSON.stringify(user))
     } else {
       setuser(null)
     }
   });
 
   useEffect(() => {
-    console.log(app)
-    setuser(auth.currentUser)
+    //console.log(app)
+    setuser(JSON.parse(localStorage.getItem("user")!))
   }, [])
   
   return <>

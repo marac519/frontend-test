@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useEffect } from 'react';
 import { getAuth, signOut } from "firebase/auth";
 import useAppStore from "../store/useAppStore"
+import { cleanNotifications } from '@mantine/notifications';
 
 
 
@@ -12,13 +13,17 @@ function Header() {
 
   const auth = getAuth();
   const user = useAppStore((state:any) => state.user)
+  const setuser = useAppStore((state:any) => state.setuser)
 
   const [activeMenu, setactiveMenu] = useState<any>()
 
   function signOutFromFirebase(){
+    cleanNotifications()
     Router.push("/login");
     signOut(auth).then(() => {
       console.log("user",user)
+      localStorage.removeItem('user')
+      setuser(null)
       // Sign-out successful.
     }).catch((error) => {
       // An error happened.
@@ -26,8 +31,8 @@ function Header() {
   }
 
   useEffect(() => {
-    console.log("user:",auth.currentUser)
-    if(auth.currentUser == null){
+    //console.log("user:",localStorage.getItem("user"))
+    if(localStorage.getItem("user") == null){
       Router.push("/login");
     }
     // console.log(user.email == undefined)

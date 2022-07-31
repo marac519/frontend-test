@@ -20,6 +20,7 @@ import {
 import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import useAppStore from "../store/useAppStore"
 import GoogleButton from 'react-google-button';
+import { showNotification } from '@mantine/notifications';
 
 function Login(props:any) {
 
@@ -84,6 +85,24 @@ function Login(props:any) {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          showNotification({
+            title: 'Error 🤥',
+            message: "Your account doesn't exists!",
+            autoClose: 5000,
+            styles: (theme) => ({
+              root: {
+                backgroundColor: 'white',
+                borderColor: 'red',
+                '&::before': { backgroundColor: 'red' },
+              },
+              title: { color: theme.black },
+              description: { color: theme.black },
+              closeButton: {
+                color: theme.black,
+                '&:hover': { backgroundColor: 'red !important' },
+              },
+            })
+          })
         });
 
     }
@@ -173,6 +192,7 @@ function Login(props:any) {
               : "Don't have an account? Register"}
           </Anchor>
           <Button
+            color={'green'}
             onClick={type == 'register' ? signUpWithEmailAndPassword_to_firebase : signInWithEmailAndPassword_to_firebase}
             type="submit">{upperFirst(type)}
           </Button>

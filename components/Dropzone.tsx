@@ -5,7 +5,7 @@ import { IconCloudUpload, IconX, IconDownload, IconCircleCheck } from '@tabler/i
 
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection, serverTimestamp  } from "firebase/firestore";
-import { db } from './../pages/_app' 
+import { app, db } from './../pages/_app' 
 import useAppStore from '../store/useAppStore';
 import { showNotification, cleanNotifications } from '@mantine/notifications';
 
@@ -62,8 +62,9 @@ export function DropzoneButton() {
     
     console.log("file mit kaptam", file )
     
-    try {
+    //try {
       const storage = getStorage();
+      console.log(file.name)
       const storageRef = ref(storage, file.name);
       const result = await uploadBytes(storageRef, file).then((snapshot) => {
         console.log('Uploaded a blob or file!:');
@@ -102,33 +103,34 @@ export function DropzoneButton() {
           })
         })
       }, 300);
-    } catch (error) {
-      cleanNotifications()
-      setTimeout(() => {
-        showNotification({
-          title: 'Error 🤥',
-          message: 'Cannot upload the photo!',
-          autoClose: 5000,
-          styles: (theme) => ({
-            root: {
-              backgroundColor: 'white',
-              borderColor: 'red',
-              '&::before': { backgroundColor: 'red' },
-            },
-            title: { color: theme.black },
-            description: { color: theme.black },
-            closeButton: {
-              color: theme.black,
-              '&:hover': { backgroundColor: 'red !important' },
-            },
-          })
-        })
-      }, 300);
-    }
+    // } catch (error) {
+    //   console.log(error)
+    //   cleanNotifications()
+    //   setTimeout(() => {
+    //     showNotification({
+    //       title: 'Error 🤥',
+    //       message: 'Cannot upload the photo!',
+    //       autoClose: 5000,
+    //       styles: (theme) => ({
+    //         root: {
+    //           backgroundColor: 'white',
+    //           borderColor: 'red',
+    //           '&::before': { backgroundColor: 'red' },
+    //         },
+    //         title: { color: theme.black },
+    //         description: { color: theme.black },
+    //         closeButton: {
+    //           color: theme.black,
+    //           '&:hover': { backgroundColor: 'red !important' },
+    //         },
+    //       })
+    //     })
+    //   }, 300);
+    // }
   }
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} id={'dropzone'}>
       <Dropzone
         onDrop={(files) => uploadImageToFirebase(files[0])}
         onReject={(files) => console.log('rejected files', files[0])}
@@ -158,7 +160,7 @@ export function DropzoneButton() {
           <Text align="center" weight={700} size="lg" mt="xl">
             <Dropzone.Accept>Drop files here</Dropzone.Accept>
             <Dropzone.Reject>Jpeg, Png, and Webp files less than 30mb</Dropzone.Reject>
-            <Dropzone.Idle>Upload resume</Dropzone.Idle>
+            <Dropzone.Idle>Upload your image</Dropzone.Idle>
           </Text>
           <Text align="center" size="sm" mt="xs" color="dimmed">
             Drag&apos;n&apos;drop files here to upload. We can accept only <i>.png</i>, <i>.jpeg</i>, and <i>.webp</i> files that
@@ -168,7 +170,7 @@ export function DropzoneButton() {
       </Dropzone>
 
       <Button className={classes.control} size="md" radius="xl" onClick={() => openRef.current?.()}>
-        Select files
+        Select file
       </Button>
     </div>
   );

@@ -49,9 +49,10 @@ a {
 .active-menu-item {
   /* background-color: cadetblue; */
   border-radius: 10px;
+  color: white !important;
 }
 .menu-item {
-  padding: 7px 25px !important
+  padding: 7px 25px !important;
 }
 
 .page-content {
@@ -91,14 +92,14 @@ a {
   z-index: 1000;
 }
 
-.mantine-Button-root{
-  background-color: #198754;
-  border: 2px solid #198754;
+#dropzone button {
+  background-color: #198754 !important;
+  border: 2px solid #198754 !important;
   transition: all 300ms;
 }
-.mantine-Button-root:hover{
-  background-color: white;
-  color: #198754;
+#dropzone button:hover{
+  background-color: white !important;
+  color: #198754 !important;
 }
 
 .profile-area {
@@ -109,6 +110,12 @@ a {
   gap: 10px;
   justify-content: center;
   padding: 0 10%; */
+}
+.button {
+  transition: all 300ms !important;
+}
+.button:hover {
+  transform: scale(1.12);
 }
 
 @media screen and (max-width: 992px) {
