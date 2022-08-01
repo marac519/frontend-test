@@ -1,4 +1,7 @@
+// react
 import React from 'react'
+
+// components
 import Header from '../components/Header'
 import { DropzoneButton } from '../components/Dropzone'
 import { motion } from 'framer-motion'

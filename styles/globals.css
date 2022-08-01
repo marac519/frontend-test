@@ -42,12 +42,12 @@ a {
   display: flex !important; 
   align-items: center !important;
 }
+
 .googlebutton span {
   margin-left: 10%;
 }
 
 .active-menu-item {
-  /* background-color: cadetblue; */
   border-radius: 10px;
   color: white !important;
 }
@@ -75,8 +75,8 @@ a {
 }
 
 .loader {
-  border: 10px solid #f3f3f3; /* Light grey */
-  border-top: 10px solid #198754; /* Blue */
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #198754;
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -111,6 +111,7 @@ a {
   justify-content: center;
   padding: 0 10%; */
 }
+
 .button {
   transition: all 300ms !important;
 }

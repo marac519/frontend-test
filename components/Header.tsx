@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+// react, next
+import React, { useState, useEffect } from 'react'
 import Router from "next/router";
 import Link from 'next/link'
 
-import { useEffect } from 'react';
+// firebase
 import { getAuth, signOut } from "firebase/auth";
+
+// utils
 import useAppStore from "../store/useAppStore"
 import { cleanNotifications } from '@mantine/notifications';
-
 
 
 function Header() {
@@ -15,28 +17,24 @@ function Header() {
   const user = useAppStore((state:any) => state.user)
   const setuser = useAppStore((state:any) => state.setuser)
 
-  const [activeMenu, setactiveMenu] = useState<any>()
-
   function signOutFromFirebase(){
     cleanNotifications()
     Router.push("/login");
     signOut(auth).then(() => {
-      console.log("user",user)
+      console.log("user who signed out:",user)
       localStorage.removeItem('user')
       setuser(null)
       // Sign-out successful.
     }).catch((error) => {
+      console.log(error)
       // An error happened.
     });
   }
 
   useEffect(() => {
-    //console.log("user:",localStorage.getItem("user"))
-    if(localStorage.getItem("user") == null){
+    if(user == null){
       Router.push("/login");
     }
-    // console.log(user.email == undefined)
-
   }, [])
 
   return (

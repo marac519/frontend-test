@@ -11,7 +11,7 @@ describe('testing login', () => {
       
       cy.url().should('eq', 'http://localhost:3000/')
       
-      cy.get('.page-content div').should('have.class', 'card')
+      cy.get('.page-content').first().should('not.have.class', 'loader')
     })
   })
 

@@ -18,7 +18,7 @@ describe('testing login', () => {
     cy.get('[placeholder="Your name"]').click()
     .type('Martin')
     cy.get('[placeholder="hello@mantine.dev"]').click()
-    .type('test30@test.hu')
+    .type('test50@test.hu')
     cy.get('[placeholder="Your password"]').click()
     .type('12345678')
     cy.get(".mantine-Button-root").click()

@@ -1,19 +1,19 @@
+// react, next
 import type { NextPage } from 'next'
-// import Router from "next/router";
-// import Link from 'next/link'
-// import Head from 'next/head'
 import { useCallback, useEffect, useRef, useState } from 'react';
-// import { getAuth, signOut } from "firebase/auth";
-// import useAppStore from "../store/useStore"
-// import { app } from './_app'
-import { doc, collection, query, where, getDocs, DocumentData, orderBy, deleteDoc, onSnapshot } from "firebase/firestore";
-import { db } from './../pages/_app'
 
-import Header from '../components/Header';
-import useAppStore from '../store/useAppStore';
+
+// firebase
+import { doc, collection, query, where, DocumentData, orderBy, deleteDoc, onSnapshot } from "firebase/firestore";
+import { db } from './../pages/_app'
 import { getAuth } from 'firebase/auth';
 
-import { Modal, Button, Group } from '@mantine/core';
+// global store
+import useAppStore from '../store/useAppStore';
+
+// components
+import Header from '../components/Header';
+import { Modal } from '@mantine/core';
 import ImageViewer from 'react-simple-image-viewer';
 import { IconCircleCheck, IconTrash } from '@tabler/icons';
 import { showNotification } from '@mantine/notifications';
@@ -22,7 +22,6 @@ import { motion } from "framer-motion"
 
 function Home() {
   const user = useAppStore((state:any) => state.user)
-  const auth = getAuth();
 
   const [images, setimages] = useState<DocumentData[]>([])
   const [isLoading, setisLoading] = useState(true)
@@ -44,7 +43,6 @@ function Home() {
   };
 
   async function getUsersImages(){
-    console.log("getUsersImages lefutott")
     const q = query(collection(db,"images"), where("userId", "==", user.uid), orderBy("created_at", "desc"));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -57,21 +55,9 @@ function Home() {
         console.log(doc.id, " => ", doc);
       });
       setimages(query_data)
+
     });
     return unsubscribe
-    
-    // const querySnapshot = await getDocs(q);
-    // console.log('querySnapshot:',querySnapshot)
-    // let query_data: DocumentData[] = []
-    // querySnapshot.forEach((doc) => {
-    //   // doc.data() is never undefined for query doc snapshots
-    //   const doc_object = doc.data()
-    //   doc_object['id'] = doc.id
-    //   query_data.push(doc_object)
-    //   //setimages([...images, doc.data()])
-    //   console.log(doc.id, " => ", doc);
-    // });
-    // setimages(query_data)
   }
 
   async function deleteUsersImage() {
@@ -103,28 +89,26 @@ function Home() {
     }, 300);
   }
 
-  //const executedref = useRef(false);
+  // component mounted
+  const executedref = useRef(false);
   useEffect( () => {
-    //if (executedref.current) { return; } 
+    if (executedref.current) { return; } 
     if (user != null) {
-      console.log("useffect runs")
-    getUsersImages()
-    setisLoading(false)
-    setTimeout(() => {
-      }, 500);
-    }
+      getUsersImages().then(() => setisLoading(false))
+  }
+  executedref.current = true
+}, [])
 
-    //executedref.current = true
-  }, [])
-  
+  // images data has been changed
   useEffect(() => {
     console.log(images)
     const filtered: any = []
     images.forEach((value) => filtered.push(value.imageURL))
-    console.log('filtered',filtered)
+    // console.log('filtered',filtered)
     setimages_for_imageviewer(filtered)
-  }, [images])
+    }, [images])
 
+  // converts timestamp to Date
   function timeConverter(UNIX_timestamp:number){
     var a = new Date(UNIX_timestamp * 1000);
     var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -137,8 +121,8 @@ function Home() {
     var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
     return time;
   }
-  // console.log(timeConverter(0));
   
+  // rendering image cards
   const images_to_render = images.map((image, index) => 
     <motion.div className="card" style={{'maxWidth': '286px', 'margin': '25px'}} key={image.created_at} layout>
       <img src={image.imageURL} className="card-img-top" alt="..." style={{'maxHeight': "180px", 'maxWidth': '286px', 'minHeight': '180px', 'minWidth': '286px'}}/>
@@ -168,7 +152,7 @@ function Home() {
       >
         {user ? images_to_render : ""}
       </motion.div>
-      {isLoading == false && images.length == 0 ? <div className="page-content"><h1 style={{'marginTop': '15%'}}>No data!</h1></div>: ""}
+      {isLoading == false && images.length == 0 ? <div className="page-content"><h1 style={{'marginTop': '15%'}} className="no_data">No data!</h1></div>: ""}
       {isLoading ? <div className="page-content" style={{'paddingTop': '20%'}}><div className="loader"></div></div> : ""}
       {isViewerOpen && (
           <div>

@@ -1,13 +1,21 @@
+// react
 import { useRef } from 'react';
+
+// styles, Mantine
 import { Text, Group, Button, createStyles } from '@mantine/core';
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import { IconCloudUpload, IconX, IconDownload, IconCircleCheck } from '@tabler/icons';
+import { showNotification, cleanNotifications } from '@mantine/notifications';
 
+// firebase
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection, serverTimestamp  } from "firebase/firestore";
+
+// utils
 import { app, db } from './../pages/_app' 
+
+// store
 import useAppStore from '../store/useAppStore';
-import { showNotification, cleanNotifications } from '@mantine/notifications';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -60,20 +68,18 @@ export function DropzoneButton() {
       loading: true
     })
     
-    console.log("file mit kaptam", file )
+    console.log("file the input element got:", file )
     
     try {
       const storage = getStorage();
-      console.log(file.name)
       const storageRef = ref(storage, file.name);
-      const result = await uploadBytes(storageRef, file).then((snapshot) => {
+      await uploadBytes(storageRef, file).then((snapshot) => {
         console.log('Uploaded a blob or file!:');
       });
-      console.log(result)
   
       const url = await getDownloadURL(ref(storage, `gs://frontend-test-e15e4.appspot.com/${file.name}`))
-      console.log("url:", url)
-      console.log("user.uid:",user.uid)
+      console.log("image url:", url)
+      console.log("user who uploaded:",user.uid)
       
       const docRef = await addDoc(collection(db, "images"), {
         userId: `${user.uid}`,
@@ -109,7 +115,7 @@ export function DropzoneButton() {
       setTimeout(() => {
         showNotification({
           title: 'Error 🤥',
-          message: 'Cannot upload the photo!',
+          message: 'Cannot upload the photo! Try to signout, and then signin again!',
           autoClose: 5000,
           styles: (theme) => ({
             root: {

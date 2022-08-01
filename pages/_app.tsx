@@ -1,23 +1,26 @@
+// styles, Mantine
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 
-// add bootstrap css 
+// bootstrap css 
 import 'bootstrap/dist/css/bootstrap.css'
 
-// Import the functions you need from the SDKs you need
+// firebase
 import { initializeApp } from "firebase/app";
-import { useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import useAppStore from '../store/useAppStore';
+import { getFirestore } from 'firebase/firestore';
+
+// react, next
+import { useEffect } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
-import { getFirestore } from 'firebase/firestore';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+// global store
+import useAppStore from '../store/useAppStore';
+
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDiidyRDtLrhI6x3W1CUgThRs0oBxhCb0o",
   authDomain: "frontend-test-e15e4.firebaseapp.com",
@@ -46,11 +49,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   useEffect(() => {
-    //console.log(app)
     setuser(JSON.parse(localStorage.getItem("user")!))
   }, [])
   
   return <>
+    {/* Bootstrap and Mantine integration */}
     <MantineProvider withNormalizeCSS withGlobalStyles>
       <NotificationsProvider>
         <Head>

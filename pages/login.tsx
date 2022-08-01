@@ -1,7 +1,8 @@
+// next
 import type { NextPage } from 'next'
 import Router from "next/router";
-// import React from 'react'
 
+// styles, Mantine
 import { useToggle, upperFirst } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import {
@@ -17,10 +18,14 @@ import {
   Anchor,
   Stack,
 } from '@mantine/core';
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-import useAppStore from "../store/useAppStore"
 import GoogleButton from 'react-google-button';
 import { showNotification } from '@mantine/notifications';
+
+// firebase
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+
+// store
+import useAppStore from "../store/useAppStore"
 
 function Login(props:any) {
 
@@ -53,7 +58,6 @@ function Login(props:any) {
             const token = credential?.accessToken;
             // The signed-in user info.
             const user = result.user;
-            //console.log("user: ",user)
             await setuser(user)
             Router.push("/");
             // ...
@@ -65,6 +69,7 @@ function Login(props:any) {
             const email = error.customData.email;
             // The AuthCredential type that was used.
             const credential = GoogleAuthProvider.credentialFromError(error);
+            console.log(error)
             // ...
         });
     }
@@ -87,7 +92,7 @@ function Login(props:any) {
           const errorMessage = error.message;
           showNotification({
             title: 'Error 🤥',
-            message: "Your account doesn't exists!",
+            message: "Your account doesn't exists or an error happened!",
             autoClose: 5000,
             styles: (theme) => ({
               root: {
@@ -123,6 +128,24 @@ function Login(props:any) {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          showNotification({
+            title: 'Error 🤥',
+            message: "We coudn't sign you up, probably your account already exits!",
+            autoClose: 5000,
+            styles: (theme) => ({
+              root: {
+                backgroundColor: 'white',
+                borderColor: 'red',
+                '&::before': { backgroundColor: 'red' },
+              },
+              title: { color: theme.black },
+              description: { color: theme.black },
+              closeButton: {
+                color: theme.black,
+                '&:hover': { backgroundColor: 'red !important' },
+              },
+            })
+          })
           // ..
         });
     }
@@ -132,7 +155,7 @@ function Login(props:any) {
     <div className='background-container'>
     <Paper radius="md" p="xl" withBorder {...props}>
       <Text size="lg" weight={500}>
-        Welcome to Mantine, {type} with
+        Welcome, {type} with
       </Text>
 
       <Group grow mb="md" mt="md">
