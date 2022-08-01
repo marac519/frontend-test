@@ -17,3 +17,5 @@ describe('testing login', () => {
       cy.get('.icon-tabler-circle-check')
     })
   })
+
+  export {}

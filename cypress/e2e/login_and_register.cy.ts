@@ -26,3 +26,5 @@ describe('testing login', () => {
     cy.url().should('eq', 'http://localhost:3000/')
   })
 })
+
+export {}

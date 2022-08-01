@@ -14,3 +14,5 @@ describe('testing login', () => {
       cy.get('.page-content div').should('have.class', 'card')
     })
   })
+
+export {}
