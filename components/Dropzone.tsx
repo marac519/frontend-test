@@ -62,7 +62,7 @@ export function DropzoneButton() {
     
     console.log("file mit kaptam", file )
     
-    //try {
+    try {
       const storage = getStorage();
       console.log(file.name)
       const storageRef = ref(storage, file.name);
@@ -103,30 +103,30 @@ export function DropzoneButton() {
           })
         })
       }, 300);
-    // } catch (error) {
-    //   console.log(error)
-    //   cleanNotifications()
-    //   setTimeout(() => {
-    //     showNotification({
-    //       title: 'Error 🤥',
-    //       message: 'Cannot upload the photo!',
-    //       autoClose: 5000,
-    //       styles: (theme) => ({
-    //         root: {
-    //           backgroundColor: 'white',
-    //           borderColor: 'red',
-    //           '&::before': { backgroundColor: 'red' },
-    //         },
-    //         title: { color: theme.black },
-    //         description: { color: theme.black },
-    //         closeButton: {
-    //           color: theme.black,
-    //           '&:hover': { backgroundColor: 'red !important' },
-    //         },
-    //       })
-    //     })
-    //   }, 300);
-    // }
+    } catch (error) {
+      console.log(error)
+      cleanNotifications()
+      setTimeout(() => {
+        showNotification({
+          title: 'Error 🤥',
+          message: 'Cannot upload the photo!',
+          autoClose: 5000,
+          styles: (theme) => ({
+            root: {
+              backgroundColor: 'white',
+              borderColor: 'red',
+              '&::before': { backgroundColor: 'red' },
+            },
+            title: { color: theme.black },
+            description: { color: theme.black },
+            closeButton: {
+              color: theme.black,
+              '&:hover': { backgroundColor: 'red !important' },
+            },
+          })
+        })
+      }, 300);
+    }
   }
 
   return (
